@@ -1,0 +1,46 @@
+# sweep.yaml (Corrected)
+
+# 실행할 프로그램 이름 (Python 스크립트여야 함)
+program: main2.py
+
+# 탐색 전략
+method: bayes
+
+# 최적화 목표
+metric:
+  name: val_balanced_acc
+  goal: maximize
+
+# 튜닝할 하이퍼파라미터 정의
+parameters:
+  lr:
+    distribution: log_uniform_values
+    min: 0.000002
+    max: 0.0001
+  dropout_prob:
+    values: [0.2, 0.3, 0.4, 0.5]
+  weight_decay:
+    distribution: log_uniform_values
+    min: 0.00001
+    max: 0.001
+  gamma:
+    values: [0.5, 1.0, 2.0, 3.0]
+  beta:
+    values: [0.99, 0.999, 0.9999]
+
+# --------------------------------------------------------------------
+# 실행 명령어 템플릿
+# --------------------------------------------------------------------
+command:
+  - ${env}
+  - ${interpreter}
+  - ${program}
+  - --output_dir
+  - ./result/forehead_result
+  - --wandb_dir
+  - ./result_wandb/forehead_wandb_result
+  - --data_dirs
+  - /content/drive/MyDrive/skin_check_ai/dataset/wrinkle/forehead_wrinkle
+  - --train_loss
+  - cb
+  - ${args}
